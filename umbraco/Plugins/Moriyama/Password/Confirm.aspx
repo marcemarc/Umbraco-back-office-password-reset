@@ -40,6 +40,13 @@
             <asp:Button ID="Submit" runat="server" Text="Reset your password" OnClick="Submit_Click" />
             
         </asp:Panel>
+        <asp:Panel ID="ResetExpiredPanel" runat="server" Visible="false">
+             <h1>Reset Link Expired</h1>
+            <p>This link to reset your password has expired, please <a href="reset.aspx">generate a new reset link to try again</a></p>
+
+
+        </asp:Panel>
+        
     </div>
     </form>
     
