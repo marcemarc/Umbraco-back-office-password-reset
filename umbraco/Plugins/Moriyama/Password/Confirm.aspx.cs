@@ -16,6 +16,7 @@ namespace Moriyama.Umbraco.Password.umbraco.Plugins.Moriyama.Password
     {
         private string _basePath;
         private string _resetFile;
+        private int _expiryPeriod = 30; //in minutes
 
         protected void Page_Init(object sender, EventArgs e)
         {
@@ -44,9 +45,24 @@ namespace Moriyama.Umbraco.Password.umbraco.Plugins.Moriyama.Password
             if (!File.Exists(outputFile))
                 return;
 
-            _resetFile = outputFile;
-            Panel1.Visible = true;
+            //check datetime that reset file was created,
+            // if it is more than expiry period eg 30mins,
+            // don't let the password be reset
+            DateTime dateCreated = File.GetCreationTime(outputFile);
+            TimeSpan resetDuration = DateTime.Now - dateCreated;
+            // should the reset time be configurable somewhere ?      
+            if (resetDuration.TotalMinutes > _expiryPeriod)
+            {
+                
+                ResetExpiredPanel.Visible = true;
 
+            }
+            else
+            {
+
+                _resetFile = outputFile;
+                Panel1.Visible = true;
+            }
         }
 
         protected void Page_Load(object sender, EventArgs e)
